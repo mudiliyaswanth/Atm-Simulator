@@ -30,9 +30,9 @@ ATM-Simulator/
 │ │ ├── PinChange.java
 │ │ └── Transaction.java
 │ └── images/
+│ | ├── atmdashboard.jpg
 │ | ├── atm.jpg
-│ | ├── logo.jpg
-│ | └── atmdashboard.jpg
+│ | └── logo.jpg
 └── README.md
 
 
@@ -45,12 +45,9 @@ ATM-Simulator/
 * **JDBC (Java Database Connectivity)** – to connect Java with MySQL database
 * **MySQL** – for storing user and transaction data
 * **JCalendar Library** – used for date picking in forms
-* **File I/O** – for potential data handling and logging
 * **Eclipse IDE** – preferred development environment (can use IntelliJ or VS Code with Java extensions)
 
 
-
-## 🔧 How to Run the Project
 
 ### ✅ Prerequisites
 
@@ -65,7 +62,7 @@ Make sure the following tools and files are set up before running the project:
 
 
 
-## ▶️ Run Steps
+## How to Run the Project
 
 1. **Open Eclipse IDE**
 
@@ -79,16 +76,102 @@ Make sure the following tools and files are set up before running the project:
    * Add External JARs:
 
      * `mysql-connector-j-9.1.0.jar`
-     * `jcalendar.jar`
-4. **Setup Database:**
+     * `jcalendar-1.3.3.jar`
 
-   * Open MySQL
-   * Create a database:
 
-     ```sql
-     CREATE DATABASE `bank management system`;
-     ```
-   * Execute the provided `.sql` file (in the zip) to create necessary tables like `login`, `signup`, `bank`, etc.
+ 4. **Setup Database**
+
+    To store user credentials and transaction history, this project connects to a MySQL database using JDBC and follows a multi-step signup       process.
+
+## 🔹 Step-by-Step Instructions:
+
+    1. **Open MySQL Command Line Client**  or any GUI like MySQL Workbench or phpMyAdmin.
+
+    2. **Create a new database:**
+
+       ``` 
+       CREATE DATABASE `bank management system`;
+       USE `bank management system`;
+       ```
+    
+    3. **Create the necessary tables:**
+    
+       ```
+       -- Step 1: User account creation (Signup.java)
+       CREATE TABLE signup (
+           form_no VARCHAR(20) PRIMARY KEY,
+           name VARCHAR(100),
+           fname VARCHAR(100),
+           dob DATE,
+           gender VARCHAR(10),
+           email VARCHAR(100),
+           marital_status VARCHAR(20),
+           address VARCHAR(255),
+           city VARCHAR(100),
+           state VARCHAR(100),
+           pin_code VARCHAR(10)
+       );
+    
+       -- Step 2: Additional details (Signup2.java)
+       CREATE TABLE signup2 (
+           form_no VARCHAR(20),
+           religion VARCHAR(50),
+           category VARCHAR(50),
+           income VARCHAR(50),
+           education VARCHAR(100),
+           occupation VARCHAR(50),
+           pan_no VARCHAR(20),
+           aadhar_no VARCHAR(20),
+           senior_citizen VARCHAR(5),
+           existing_account VARCHAR(5),
+           FOREIGN KEY (form_no) REFERENCES signup(form_no)
+       );
+    
+       -- Step 3: Account creation (Signup3.java)
+       CREATE TABLE signup3 (
+           form_no VARCHAR(20),
+           account_type VARCHAR(50),
+           card_no VARCHAR(20),
+           pin VARCHAR(10),
+           services TEXT,
+           FOREIGN KEY (form_no) REFERENCES signup(form_no)
+       );
+    
+       -- Login credentials (Login.java)
+       CREATE TABLE login (
+           card_no VARCHAR(20) PRIMARY KEY,
+           pin VARCHAR(10)
+       );
+    
+       -- Transactions
+       CREATE TABLE transactions (
+           transaction_id INT AUTO_INCREMENT PRIMARY KEY,
+           card_no VARCHAR(20),
+           type VARCHAR(20), -- 'Deposit', 'Withdrawal', 'Balance Check'
+           amount DECIMAL(10,2),
+           date_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+           FOREIGN KEY (card_no) REFERENCES login(card_no)
+       );
+       ```
+    
+    4. **Configure JDBC Connection in Java Code:**
+    
+       Update the database connection string in your Java files:
+    
+       ```
+       String url = "jdbc:mysql://localhost:3306/bank management system";
+       String user = "root";
+       String password = "your_mysql_password";
+       ```
+    
+       > Replace `"your_mysql_password"` with your actual MySQL password.
+    
+    5. **Add JDBC Driver to Your Project:**
+    
+       * Download the MySQL JDBC driver `.jar` file 
+       * In Eclipse:
+         Right-click on your project → **Build Path** → **Configure Build Path** → **Libraries** → **Add External JARs** → Select the                  downloaded `.jar`.
+  
 5. **Run the Project:**
 
    * Start with the file: `Signup.java` (for new users) or `Login.java` (if credentials exist)
@@ -101,8 +184,8 @@ Make sure the following tools and files are set up before running the project:
 
 ## 📚 Functional Flow
 
-    A[SignUp Page 1] --> B[SignUp Page 2];
-    B --> C[SignUp Page 3];
+    A[Signup Page 1] --> B[Signup Page 2];
+    B --> C[Signup Page 3];
     C --> D[Login Page];
     D --> E[Transaction Menu];
     E --> F[Deposit];
