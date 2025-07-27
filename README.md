@@ -16,23 +16,41 @@ An intuitive and fully functional **ATM Simulator** built with **Java Swing**. T
 ## 📁 Project Structure
 
 ATM-Simulator/
+
 ├── src/
+
 │ ├── javacodes/
-│ │ ├── SignUp.java
-│ │ ├── SignUp2.java
-│ │ ├── SignUp3.java
+
+│ │ ├── Signup.java
+
+│ │ ├── Signp2.java
+
+│ │ ├── Signup3.java
+
 │ │ ├── Login.java
+
 │ │ ├── Deposit.java
+
 │ │ ├── Withdrawal.java
+
 │ │ ├── FastCash.java
+
 │ │ ├── BalanceEnquiry.java
+
 │ │ ├── MiniStatement.java
+
 │ │ ├── PinChange.java
+
 │ │ └── Transaction.java
+
 │ └── images/
+
 │ | ├── atmdashboard.jpg
+
 │ | ├── atm.jpg
+
 │ | └── logo.jpg
+
 └── README.md
 
 
